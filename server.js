@@ -1,0 +1,22 @@
+
+const MongoClient = require('mongodb').MongoClient;
+const bodyParser = require('body-parser');
+const express = require('express');
+const app = express();
+var database = require('./config/db');
+const port = 7000;
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }));
+
+MongoClient.connect(database.url, (err, db) => {
+  if (err) return console.log(err);
+  var dbmongo = db.db('escuras');
+  require('./routes/index.js')(app, dbmongo);
+  app.listen(port, () => {
+    console.log('Servidor ativo: ' + port);
+  })
+});
+
+
+
