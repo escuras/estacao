@@ -13,6 +13,7 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "mongodb": "^2.2.33",
+    "moment": "^2.23.0",	
     "rsvp": "^4.8.4",
     "serialize-ts": "^2.5.1"
   },
