@@ -6,7 +6,7 @@ let dbname = 'estacao';
 mongodb://<dbuser>:<dbpassword>@ds155714.mlab.com:55714/estacao
 
 module.exports = {
-  "url": process.env.MONGODB_URI,
+  "url": "mongodb://heroku_7zl5p8dh:kd1f60os6pgal0dl8luo7jbf4f@ds255794.mlab.com:55794/heroku_7zl5p8dh",
   "url_alternative": `mongodb://${username}:${password}@${dbhost}:${port}/${dbname}`,
   "db": dbname,
   "collection": {
