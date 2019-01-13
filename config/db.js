@@ -6,7 +6,8 @@ let dbname = 'estacao';
 mongodb://<dbuser>:<dbpassword>@ds155714.mlab.com:55714/estacao
 
 module.exports = {
-  "url": `mongodb://${username}:${password}@${dbhost}:${port}/${dbname}`,
+  "url": process.env.MONGODB_URI,
+  "url_alternative": `mongodb://${username}:${password}@${dbhost}:${port}/${dbname}`,
   "db": dbname,
   "collection": {
     "user": "user",

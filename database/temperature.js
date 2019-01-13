@@ -4,7 +4,7 @@ let mongo = require('mongodb');
 let database = require('../config/db');
 
 exports.insertCelsius = function (value, account) {
-  MongoClient.connect(database.url, function (err, db) {
+  MongoClient.connect(database.url || database.url_alternative, function (err, db) {
     if (err) throw err;
     const time = moment().toDate();
     var dbo = db.db(database.db);
@@ -19,7 +19,7 @@ exports.insertCelsius = function (value, account) {
 }
 
 exports.clean = (account) => {
-  MongoClient.connect(database.url, function (err, db) {
+  MongoClient.connect(database.url || database.url_alternative, function (err, db) {
     if (err) throw err;
     var dbo = db.db(database.db);
     var query = { "account": account };
@@ -32,7 +32,7 @@ exports.clean = (account) => {
 }
 
 exports.cleanBetween = (start, end, account) => {
-  MongoClient.connect(database.url, function (err, db) {
+  MongoClient.connect(database.url || database.url_alternative, function (err, db) {
     if (err) throw err;
     var dbo = db.db(database.db);
     var query = { "date": { "$gte": start, "$lt": end }, "account": account };
@@ -45,7 +45,7 @@ exports.cleanBetween = (start, end, account) => {
 }
 
 exports.findAll = async function (account) {
-  var db = await MongoClient.connect(database.url)
+  var db = await MongoClient.connect(database.url || database.url_alternative)
     .then(data => { return data; })
     .catch(error => console.log(error));
   var dbo = db.db(database.db);
@@ -58,7 +58,7 @@ exports.findAll = async function (account) {
 }
 
 exports.findByDate = async function (start, end, account) {
-  var db = await MongoClient.connect(database.url)
+  var db = await MongoClient.connect(database.url || database.url_alternative)
     .then(data => { return data; })
     .catch(error => console.log(error));
   var dbo = db.db(database.db);

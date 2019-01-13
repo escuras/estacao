@@ -6,7 +6,7 @@ const def_period = 10;
 
 
 exports.insertPeriod = async function (account) {
-  var db = await MongoClient.connect(database.url)
+  var db = await MongoClient.connect(database.url || database.url_alternative)
     .then(data => { return data; })
     .catch(error => console.log(error));
   var dbo = db.db(database.db);
@@ -18,7 +18,7 @@ exports.insertPeriod = async function (account) {
 }
 
 exports.updatePeriod = async function (value, account) {
-  var db = await MongoClient.connect(database.url)
+  var db = await MongoClient.connect(database.url || database.url_alternative)
     .then(data => { return data; })
     .catch(error => console.log(error));
   var dbo = db.db(database.db);
@@ -32,7 +32,7 @@ exports.updatePeriod = async function (value, account) {
 }
 
 exports.findPeriod = async function (account) {
-  var db = await MongoClient.connect(database.url)
+  var db = await MongoClient.connect(database.url || database.url_alternative)
     .then(data => { return data; })
     .catch(error => console.log(error));
   var dbo = db.db(database.db);
@@ -49,7 +49,7 @@ exports.findPeriod = async function (account) {
 }
 
 exports.defaultPeriod = async (account) => {
-  var db = await MongoClient.connect(database.url)
+  var db = await MongoClient.connect(database.url || database.url_alternative)
     .then(data => { return data; })
     .catch(error => console.log(error));
   var dbo = db.db(database.db);
@@ -66,7 +66,7 @@ exports.defaultPeriod = async (account) => {
 }
 
 exports.delete = async (account) => {
-  var db = await MongoClient.connect(database.url)
+  var db = await MongoClient.connect(database.url || database.url_alternative)
     .then(data => { return data; })
     .catch(error => console.log(error));
   var dbo = db.db(database.db);

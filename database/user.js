@@ -3,16 +3,8 @@ var mongo = require('mongodb');
 var database = require('../config/db');
 let db_conf = require("../database/configuration");
 
-var findByName = function (dbo, name) {
-  dbo.collection(database.collection.user).findOne({ "database.user.name": name }, function (err, result) {
-    if (err) throw err;
-    console.log(result.name);
-    db.close();
-  });
-}
-
 exports.insert = async function (name, password, email) {
-  var db = await MongoClient.connect(database.url)
+  var db = await MongoClient.connect(database.url || database.url_alternative)
     .then(data => { return data; })
     .catch(error => console.log(error));
   var dbo = db.db(database.db);
@@ -27,7 +19,7 @@ exports.insert = async function (name, password, email) {
 
 exports.delete = async function (id) {
   console.log(id);
-  var db = await MongoClient.connect(database.url)
+  var db = await MongoClient.connect(database.url || database.url_alternative)
     .then(data => { return data; })
     .catch(error => console.log(error));
   var dbo = db.db(database.db);
@@ -41,7 +33,7 @@ exports.delete = async function (id) {
 }
 
 exports.findAll = async function () {
-  var db = await MongoClient.connect(database.url)
+  var db = await MongoClient.connect(database.url || database.url_alternative)
     .then(data => { return data; })
     .catch(error => console.log(error));
   var dbo = db.db(database.db);
@@ -55,7 +47,7 @@ exports.findAll = async function () {
 
 
 const findOne = async function (query) {
-  var db = await MongoClient.connect(database.url)
+  var db = await MongoClient.connect(database.url || database.url_alternative)
     .then(data => { return data; })
     .catch(error => console.log(error));
   var dbo = db.db(database.db);
@@ -114,7 +106,7 @@ exports.findById = async function (id) {
 }
 
 exports.update = async function (id, name, password, email) {
-  var db = await MongoClient.connect(database.url)
+  var db = await MongoClient.connect(database.url || database.url_alternative)
     .then(data => { return data; })
     .catch(error => console.log(error));
   var dbo = db.db(database.db);

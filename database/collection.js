@@ -10,7 +10,7 @@ exports.createDatabase = function () {
 }
 
 exports.createCollections = async function () {
-  MongoClient.connect(database.url, (err, db) => {
+  MongoClient.connect(database.url || database.url_alternative, (err, db) => {
     if (err) throw err;
     var dbo = db.db(database.db);
     dbo.createCollection(database.collection.user, function (err, res) {
@@ -33,7 +33,7 @@ exports.createCollections = async function () {
 }
 
 exports.dropColldatabase.collection.userection = function (name) {
-  MongoClient.connect(url, { useNewUrlParser: true }, function (err, db) {
+  MongoClient.connect(database.url || database.url_alternative, function (err, db) {
     if (err) throw err;
     var dbo = db.db(database.db);
     dbo.collection(name).drop(function (err, delOK) {
