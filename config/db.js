@@ -7,7 +7,6 @@ mongodb://<dbuser>:<dbpassword>@ds155714.mlab.com:55714/estacao
 
 module.exports = {
   "url": `mongodb://${username}:${password}@${dbhost}:${port}/${dbname}`,
-  //"url": "mongodb://localhost:27017",
   "db": dbname,
   "collection": {
     "user": "user",
