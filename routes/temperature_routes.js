@@ -53,16 +53,16 @@ module.exports = function (app, database) {
             res.send(`All records deleted.`);
         }
         if (req.query.start && !req.query.end) {
-            var start = req.query.start;
-            var end = moment().toDate();
+            var start = req.query.start.toString();
+            var end = moment().toDate().toString();
             db_temp.cleanBetween(start, end, account);
             res.status(202);
             res.send(`Period deleted between ${start} and ${end}.`);
             return;
         }
         if (req.query.start && req.query.end) {
-            var start = req.query.start;
-            var end = req.query.end;
+            var start = req.query.start.toString();
+            var end = req.query.end.toString();
             db_temp.cleanBetween(start, end, account);
             res.status(202);
             res.send(`Period deleted between ${start} and ${end}.`);
@@ -93,7 +93,7 @@ module.exports = function (app, database) {
             return;
         }
         if (req.query.start && !req.query.end) {
-            var start = req.query.start;
+            var start = req.query.start.toString();
             var end = moment().toDate().toString();
             var values = await db_temp.findByDate(start, end, account);
             res.status(200);

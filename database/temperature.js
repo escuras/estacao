@@ -32,6 +32,8 @@ exports.clean = (account) => {
 }
 
 exports.cleanBetween = (start, end, account) => {
+  console.log(start);
+  console.log(end);
   MongoClient.connect(database.url || database.url_alternative, function (err, db) {
     if (err) throw err;
     var dbo = db.db(database.db);
