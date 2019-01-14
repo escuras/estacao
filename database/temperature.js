@@ -37,8 +37,8 @@ exports.cleanBetween = (start, end, account) => {
   MongoClient.connect(database.url || database.url_alternative, function (err, db) {
     if (err) throw err;
     var dbo = db.db(database.db);
-    var query = { date: { $gte: new Date(start), $lte: new Date(end) }, account: account };
-    dbo.collection(database.collection.temperature).remove({ query }, function (err, result) {
+    var query = { date: { "$gte": new Date(start), "$lte": new Date(end) }, account: account };
+    dbo.collection(database.collection.temperature).deleteMany(query, function (err, result) {
       if (err) throw err;
       console.log(`All records between ${start} and ${end} where deleted.`);
       db.close();

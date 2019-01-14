@@ -8,23 +8,23 @@ module.exports = function (app, database) {
         var period = req.query.period;
         var account = req.query.account;
         if (!period) {
-            res.status(400);
+            res.status(401);
             res.send("The period of lecture is needed.");
             return;
         }
         if (!account) {
-            res.status(400);
+            res.status(402);
             res.send("The account is needed.");
-            return; configuration
+            return;
         }
         var user = await findUser(account);
         if (user === null) {
-            res.status(400);
+            res.status(403);
             res.send("The account don't exist.");
             return;
         }
         db_conf.updatePeriod(period, account);
-        res.status(200);
+        res.status(201);
         res.send("The period was updated to " + period + ".");
     });
 
@@ -37,13 +37,13 @@ module.exports = function (app, database) {
     app.get('/api/configuration/period', async function (req, res) {
         var account = req.query.account;
         if (!account) {
-            res.status(400);
+            res.status(401);
             res.send("The account is needed.");
             return;
         }
         var user = await findUser(account);
         if (user === null) {
-            res.status(400);
+            res.status(402);
             res.send("The account don't exist.");
             return;
         }
@@ -57,13 +57,13 @@ module.exports = function (app, database) {
     app.get('/api/configuration/default_period', async function (req, res) {
         var account = req.query.account;
         if (!account) {
-            res.status(400);
+            res.status(401);
             res.send("The account is needed.");
             return;
         }
         var user = await findUser(account);
         if (user === null) {
-            res.status(400);
+            res.status(402);
             res.send("The account don't exist.");
             return;
         }

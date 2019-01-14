@@ -168,7 +168,9 @@
                     {
                         "name": "id",
                         "in": "query",
-                        "required": true
+                        "type": "string",
+                        "required": true,
+                        "description": "Id of the user."
                     }
                 ],
                 "responses": {
@@ -186,12 +188,14 @@
                     {
                         "name": "account",
                         "in": "query",
+                        "type": "string",
                         "required": true,
                         "description": "Id of the user."
                     },
                     {
                         "name": "value",
                         "in": "query",
+                        "type": "string",
                         "required": true,
                         "description": "Value pf the temperature."
                     }
@@ -240,16 +244,19 @@
                 ],
                 "responses": {
                     "201": {
-                        "description": "The value was inserted."
+                        "description": "All records deleted."
+                    },
+                    "202": {
+                        "description": "Period deleted between..."
                     },
                     "401": {
-                        "description": "The value of temperature is needed."
-                    },
-                    "402": {
                         "description": "The account is needed."
                     },
-                    "403": {
+                    "402": {
                         "description": "The account don't exist."
+                    },
+                    "403": {
+                        "description": "Start moment is needed if end moment defined."
                     }
                 }
             }
@@ -282,15 +289,106 @@
                 ],
                 "responses": {
                     "201": {
-                        "description": "The value was inserted."
+                        "description": "All records."
+                    },
+                    "202": {
+                        "description": "Records between..."
                     },
                     "401": {
-                        "description": "The value of temperature is needed."
+                        "description": "The account is needed."
+                    },
+                    "402": {
+                        "description": "The account don't exist."
+                    },
+                    "403": {
+                        "description": "Start moment is needed if end moment defined."
+                    }
+                }
+            }
+        },
+        "/api/configuration": {
+            "put": {
+                "summary": "Update interval of lecture.",
+                "description": "Update period for lecture of sensors.",
+                "parameters": [
+                    {
+                        "name": "account",
+                        "in": "query",
+                        "type": "string",
+                        "required": true,
+                        "description": "Id of the user."
+                    },
+                    {
+                        "name": "period",
+                        "in": "query",
+                        "type": "number",
+                        "required": true,
+                        "description": "Value of the period for lecture of the sensors."
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The period was updated."
+                    },
+                    "401": {
+                        "description": "The period of lecture is needed."
                     },
                     "402": {
                         "description": "The account is needed."
                     },
                     "403": {
+                        "description": "The account don't exist."
+                    }
+                }
+            }
+        },
+        "/api/configuration/period": {
+            "get": {
+                "summary": "Get interval of lecture.",
+                "description": "Get period for lecture of sensors.",
+                "parameters": [
+                    {
+                        "name": "account",
+                        "in": "query",
+                        "type": "string",
+                        "required": true,
+                        "description": "Id of the user."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Period send."
+                    },
+                    "401": {
+                        "description": "The account is needed."
+                    },
+                    "402": {
+                        "description": "The account don't exist."
+                    }
+                }
+            }
+        },
+        "/api/configuration/default_period": {
+            "get": {
+                "summary": "Get default interval of lecture.",
+                "description": "Get default period for lecture of sensors.",
+                "parameters": [
+                    {
+                        "name": "account",
+                        "in": "query",
+                        "type": "string",
+                        "required": true,
+                        "description": "Id of the user."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Default period send."
+                    },
+                    "401": {
+                        "description": "The account is needed."
+                    },
+                    "402": {
                         "description": "The account don't exist."
                     }
                 }
