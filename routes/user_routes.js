@@ -14,19 +14,19 @@ module.exports = function (app, database) {
       return;
     }
     if (!password) {
-      res.status(400);
+      res.status(401);
       res.send("The password of the user is needed.");
       return;
     }
     var user = await findUserWithName(name);
     if (user !== null) {
-      res.status(400);
+      res.status(402);
       res.send("Exists a user with same name.");
       return;
     }
     var user = await findUserWithEmail(email);
     if (user !== null) {
-      res.status(400);
+      res.status(403);
       res.send("Exists a user with same email.");
       return;
     }
@@ -54,7 +54,7 @@ module.exports = function (app, database) {
     return user;
   }
 
-  app.get('/api/users', async function (req, res) {
+  app.get('/api/users/get', async function (req, res) {
     var users = await db_user.findAll()
       .then(data => { return data });
     const dtos = users.map(function (user) {
@@ -68,15 +68,17 @@ module.exports = function (app, database) {
     res.send(dtos);
   });
 
-  app.get('/api/user', async function (req, res) {
-    console.log(req.query.name);
-    if (req.query.password === undefined) {
-      res.status(400);
+  app.get('/api/user/get', async function (req, res) {
+    var name = req.body.name;
+    var email = req.body.email;
+    var password = req.body.password;
+    if (password === undefined) {
+      res.status(401);
       res.send("You need the password of the user.");
       return;
     }
-    if (req.query.name !== undefined) {
-      var user = await db_user.findByNameAndPassword(req.query.name, req.query.password);
+    if (name !== undefined) {
+      var user = await db_user.findByNameAndPassword(name, password);
       if (user !== null) {
         var dto = {
           id: user._id,
@@ -88,8 +90,8 @@ module.exports = function (app, database) {
         return;
       }
     }
-    if (req.query.name !== undefined) {
-      var user = await db_user.findByEmail(req.query.email, req.query.password);
+    if (name === undefined && email !== undefined) {
+      var user = await db_user.findByEmail(email, password);
       if (user !== null) {
         var dto = {
           id: user._id,
@@ -101,17 +103,18 @@ module.exports = function (app, database) {
         return;
       }
     }
+    res.status(402);
     res.send(null);
   });
 
   app.put('/api/user', async function (req, res) {
-    if (req.query.password === undefined) {
+    if (req.body.password === undefined) {
       res.status(400);
       res.send("You need the password to update the user.");
       return;
     }
     res.status(200);
-    if (req.query.name !== undefined) {
+    if (req.body.name !== undefined) {
       if (db_user.update(req.query.id, req.query.name, req.query.password, req.query.email)) {
         res.send(req.query.id);
         return;

@@ -15,7 +15,7 @@ module.exports = function (app, database) {
         if (!account) {
             res.status(400);
             res.send("The account is needed.");
-            return;
+            return; configuration
         }
         var user = await findUser(account);
         if (user === null) {

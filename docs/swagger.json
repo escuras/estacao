@@ -1,0 +1,113 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Metereologia API",
+        "description": "Uma API simples em heroku"
+    },
+    "paths": {
+        "/api/user": {
+            "post": {
+                "summary": "Add user.",
+                "description": "Add user to database and create account.",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "description": "The user to create.",
+                        "schema": {
+                            "required": [
+                                "name",
+                                "password"
+                            ],
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User is created"
+                    },
+                    "400": {
+                        "description": "The name of the user is needed."
+                    },
+                    "401": {
+                        "description": "The password of the user is needed."
+                    },
+                    "402": {
+                        "description": "Exists a user with same name."
+                    },
+                    "403": {
+                        "description": "Exists a user with same email."
+                    }
+                }
+            }
+        },
+        "/api/users/get": {
+            "get": {
+                "summary": "Return the list of users.",
+                "description": "Return the list of users in database. Is sorted in alphabetic order.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "List of users in database."
+                    }
+                }
+            }
+        },
+        "/api/user/get": {
+            "get": {
+                "summary": "Return the user.",
+                "description": "Return the information of the user.",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "description": "The user to get.",
+                        "schema": {
+                            "required": [
+                                "password"
+                            ],
+                            "depends": [
+                                "name",
+                                "email"
+                            ],
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User in database."
+                    },
+                    "401": {
+                        "description": "You need the password of the user."
+                    },
+                    "402": {
+                        "description": "No user found."
+                    }
+                }
+            }
+        }
+    }
+}

@@ -5,7 +5,10 @@ const express = require('express');
 const app = express();
 var database = require('./config/db');
 const port = process.env.PORT || 8080;
+var swaggerUi = require('swagger-ui-express');
+swaggerDocument = require('./docs/swagger.json');
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 
