@@ -54,6 +54,12 @@ module.exports = function (app, database) {
     return user;
   }
 
+  async function findUserWithId(id) {
+    var user = db_user.findById(id)
+      .then(data => { return data; })
+    return user;
+  }
+
   app.get('/api/users/get', async function (req, res) {
     var users = await db_user.findAll()
       .then(data => { return data });
@@ -68,7 +74,7 @@ module.exports = function (app, database) {
     res.send(dtos);
   });
 
-  app.get('/api/user/get', async function (req, res) {
+  app.post('/api/user/get', async function (req, res) {
     var name = req.body.name;
     var email = req.body.email;
     var password = req.body.password;
@@ -79,6 +85,7 @@ module.exports = function (app, database) {
     }
     if (name !== undefined) {
       var user = await db_user.findByNameAndPassword(name, password);
+      console.log(user);
       if (user !== null) {
         var dto = {
           id: user._id,
@@ -107,29 +114,52 @@ module.exports = function (app, database) {
     res.send(null);
   });
 
-  app.put('/api/user', async function (req, res) {
+  app.put('/api/user/put', async function (req, res) {
     if (req.body.password === undefined) {
-      res.status(400);
+      res.status(401);
       res.send("You need the password to update the user.");
       return;
     }
-    res.status(200);
-    if (req.body.name !== undefined) {
-      if (db_user.update(req.query.id, req.query.name, req.query.password, req.query.email)) {
-        res.send(req.query.id);
-        return;
-      }
-      res.send("Not updated, error on server.");
+    if (req.body.id === undefined) {
+      res.status(402);
+      res.send("You need the ID of the user.");
       return;
     }
-    res.send("User not found.")
+    if (req.body.name === undefined) {
+      res.status(403);
+      res.send("You need the name to update the user.");
+      return;
+    }
+    var user = await findUserWithName(req.body.name);
+    if (user !== null && user._id != req.body.id) {
+      res.status(404);
+      res.send("Exists a user with same name.");
+      return;
+    }
+    if (req.body.email === undefined) {
+      res.status(405);
+      res.send("You need the email to update the user.");
+      return;
+    }
+    var user = await findUserWithEmail(req.body.email);
+    if (user !== null && user.id != req.body.id) {
+      res.status(406);
+      res.send("Exists a user with same email.");
+      return;
+    }
+    if (db_user.update(req.body.id, req.body.name, req.body.password, req.body.email)) {
+      res.status(202);
+      res.send(req.query.id);
+      return;
+    }
   });
 
-  app.delete('/api/user', (req, res) => {
+  app.delete('/api/user/delete', (req, res) => {
     var id = req.query.id;
     db_user.delete(id);
     db_temp.clean(id);
     db_conf.delete(id);
+    res.status(200);
     res.send(`User with ${req.query.id} deleted.`);
   });
 

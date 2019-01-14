@@ -18,14 +18,12 @@ exports.insert = async function (name, password, email) {
 }
 
 exports.delete = async function (id) {
-  console.log(id);
   var db = await MongoClient.connect(database.url || database.url_alternative)
     .then(data => { return data; })
     .catch(error => console.log(error));
   var dbo = db.db(database.db);
   var o_id = new mongo.ObjectID(id);
   var query = { "_id": o_id };
-  console.log(query);
   await dbo.collection(database.collection.user).deleteOne(query)
     .then(data => { console.log("1 document deleted"); })
     .catch(error => console.log(error));
@@ -118,7 +116,9 @@ exports.update = async function (id, name, password, email) {
   } else {
     var newvalues = { $set: { "name": name, "password": password, "email": email } };
   }
-  return await collection.updateOne(query, newvalues)
+  console.log(o_id);
+  console.log(newvalues);
+  var user = await collection.updateOne(query, newvalues)
     .then(() => { return true; })
     .catch(() => { return false; });
 }

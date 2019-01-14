@@ -8,23 +8,23 @@ module.exports = function (app, database) {
         var value = req.query.value;
         var account = req.query.account;
         if (!value) {
-            res.status(400);
+            res.status(401);
             res.send("The value of temperature is needed.");
             return;
         }
         if (!account) {
-            res.status(400);
+            res.status(402);
             res.send("The account is needed.");
             return;
         }
         var user = await findUser(account);
         if (user === null) {
-            res.status(400);
+            res.status(403);
             res.send("The account don't exist.");
             return;
         }
         db_temp.insertCelsius(value, account);
-        res.status(200);
+        res.status(201);
         res.send("The value was inserted.");
     });
 
@@ -34,29 +34,29 @@ module.exports = function (app, database) {
         return user;
     }
 
-    app.delete('/api/temperature', async function (req, res) {
+    app.delete('/api/temperature/delete', async function (req, res) {
         var account = req.query.account;
         if (!account) {
-            res.status(400);
+            res.status(401);
             res.send("The account is needed.");
             return;
         }
         var user = await findUser(account);
         if (user === null) {
-            res.status(400);
+            res.status(402);
             res.send("The account don't exist.");
             return;
         }
         if (!req.query.start && !req.query.end) {
             db_temp.clean(account);
-            res.status(200);
+            res.status(201);
             res.send(`All records deleted.`);
         }
         if (req.query.start && !req.query.end) {
             var start = req.query.start;
             var end = moment().toDate();
             db_temp.cleanBetween(start, end, account);
-            res.status(200);
+            res.status(202);
             res.send(`Period deleted between ${start} and ${end}.`);
             return;
         }
@@ -64,16 +64,16 @@ module.exports = function (app, database) {
             var start = req.query.start;
             var end = req.query.end;
             db_temp.cleanBetween(start, end, account);
-            res.status(200);
+            res.status(202);
             res.send(`Period deleted between ${start} and ${end}.`);
             return;
         }
-        res.status(400);
+        res.status(403);
         res.send("Start moment is needed if end moment defined.")
         return;
     });
 
-    app.get('/api/temperature', async function (req, res) {
+    app.get('/api/temperature/get', async function (req, res) {
         var account = req.query.account;
         if (!account) {
             res.status(400);

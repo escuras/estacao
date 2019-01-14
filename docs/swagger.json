@@ -66,23 +66,62 @@
             }
         },
         "/api/user/get": {
-            "get": {
+            "post": {
                 "summary": "Return the user.",
                 "description": "Return the information of the user.",
+                "consumes": "application/x-www-form-urlencoded",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "required": false,
+                        "description": "The name of the user."
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "required": true,
+                        "description": "The password of the user."
+                    },
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "required": false,
+                        "description": "The email of the user."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User in database."
+                    },
+                    "401": {
+                        "description": "You need the password of the user."
+                    },
+                    "402": {
+                        "description": "No user found."
+                    }
+                }
+            }
+        },
+        "/api/user/put": {
+            "put": {
+                "summary": "Update the user.",
+                "description": "Update the information of the user.",
                 "parameters": [
                     {
                         "name": "user",
                         "in": "body",
-                        "description": "The user to get.",
+                        "description": "The user to update.",
                         "schema": {
                             "required": [
+                                "id",
+                                "name",
                                 "password"
                             ],
-                            "depends": [
-                                "name",
-                                "email"
-                            ],
                             "properties": {
+                                "id": {
+                                    "type": "string"
+                                },
                                 "name": {
                                     "type": "string"
                                 },
@@ -97,14 +136,162 @@
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "User in database."
+                    "202": {
+                        "description": "Id of the user."
                     },
                     "401": {
-                        "description": "You need the password of the user."
+                        "description": "You need the password to update the user."
                     },
                     "402": {
-                        "description": "No user found."
+                        "description": "You need the ID of the user."
+                    },
+                    "403": {
+                        "description": "You need the name to update the user."
+                    },
+                    "404": {
+                        "description": "Exists a user with same name."
+                    },
+                    "405": {
+                        "description": "You need the email to update the user."
+                    },
+                    "406": {
+                        "description": "Exists a user with same email."
+                    }
+                }
+            }
+        },
+        "/api/user/delete": {
+            "delete": {
+                "summary": "Delete the user.",
+                "description": "Delete the user, confiduration and stats.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operation succeded."
+                    }
+                }
+            }
+        },
+        "/api/temperature": {
+            "post": {
+                "summary": "Add temperature.",
+                "description": "Add Temperature to database.",
+                "parameters": [
+                    {
+                        "name": "account",
+                        "in": "query",
+                        "required": true,
+                        "description": "Id of the user."
+                    },
+                    {
+                        "name": "value",
+                        "in": "query",
+                        "required": true,
+                        "description": "Value pf the temperature."
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The value was inserted."
+                    },
+                    "401": {
+                        "description": "The value of temperature is needed."
+                    },
+                    "402": {
+                        "description": "The account is needed."
+                    },
+                    "403": {
+                        "description": "The account don't exist."
+                    }
+                }
+            }
+        },
+        "/api/temperature/delete": {
+            "delete": {
+                "summary": "Remove temperature values.",
+                "description": "Remove temperature in an interval.",
+                "parameters": [
+                    {
+                        "name": "account",
+                        "in": "query",
+                        "required": true,
+                        "description": "Id of the user."
+                    },
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "type": "date",
+                        "required": false,
+                        "description": "Date of the beggining of data lecture."
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "type": "date",
+                        "required": false,
+                        "description": "Date of the end of data lecture."
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The value was inserted."
+                    },
+                    "401": {
+                        "description": "The value of temperature is needed."
+                    },
+                    "402": {
+                        "description": "The account is needed."
+                    },
+                    "403": {
+                        "description": "The account don't exist."
+                    }
+                }
+            }
+        },
+        "/api/temperature/get": {
+            "get": {
+                "summary": "Get temperature values.",
+                "description": "Get temperature in an interval.",
+                "parameters": [
+                    {
+                        "name": "account",
+                        "in": "query",
+                        "required": true,
+                        "description": "Id of the user."
+                    },
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "type": "date",
+                        "required": false,
+                        "description": "Date of the beggining of data lecture."
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "type": "date",
+                        "required": false,
+                        "description": "Date of the end of data lecture."
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The value was inserted."
+                    },
+                    "401": {
+                        "description": "The value of temperature is needed."
+                    },
+                    "402": {
+                        "description": "The account is needed."
+                    },
+                    "403": {
+                        "description": "The account don't exist."
                     }
                 }
             }
