@@ -7,6 +7,7 @@ module.exports = function (app, database) {
     app.post('/api/temperature', async function (req, res) {
         var value = req.query.value;
         var account = req.query.account;
+        res.AppendHeader("Access-Control-Allow-Origin", "*");
         if (!value) {
             res.status(401);
             res.send("The value of temperature is needed.");
@@ -36,6 +37,7 @@ module.exports = function (app, database) {
 
     app.delete('/api/temperature/delete', async function (req, res) {
         var account = req.query.account;
+        res.AppendHeader("Access-Control-Allow-Origin", "*");
         if (!account) {
             res.status(401);
             res.send("The account is needed.");
@@ -80,6 +82,7 @@ module.exports = function (app, database) {
             res.send("The account is needed.");
             return;
         }
+        res.AppendHeader("Access-Control-Allow-Origin", "*");
         var user = await findUser(account);
         if (user === null) {
             res.status(402);

@@ -7,6 +7,7 @@ module.exports = function (app, database) {
     app.put('/api/configuration', async function (req, res) {
         var period = req.query.period;
         var account = req.query.account;
+        res.AppendHeader("Access-Control-Allow-Origin", "*");
         if (!period) {
             res.status(401);
             res.send("The period of lecture is needed.");
@@ -36,6 +37,7 @@ module.exports = function (app, database) {
 
     app.get('/api/configuration/period', async function (req, res) {
         var account = req.query.account;
+        res.AppendHeader("Access-Control-Allow-Origin", "*");
         if (!account) {
             res.status(401);
             res.send("The account is needed.");
@@ -56,6 +58,7 @@ module.exports = function (app, database) {
 
     app.get('/api/configuration/default_period', async function (req, res) {
         var account = req.query.account;
+        res.AppendHeader("Access-Control-Allow-Origin", "*");
         if (!account) {
             res.status(401);
             res.send("The account is needed.");
