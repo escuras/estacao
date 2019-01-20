@@ -39,7 +39,6 @@ module.exports = function (app, database) {
     }
     db_conf.insertPeriod(user._id);
     res.status(201);
-    res.AppendHeader("Access-Control-Allow-Origin", "*");
     res.send(dto);
   });
 
@@ -71,7 +70,6 @@ module.exports = function (app, database) {
       var obj = { id, name, email };
       return obj;
     });
-    res.AppendHeader("Access-Control-Allow-Origin", "*");
     res.status(200);
     res.send(dtos);
   });
@@ -80,7 +78,6 @@ module.exports = function (app, database) {
     var name = req.body.name;
     var email = req.body.email;
     var password = req.body.password;
-    res.AppendHeader("Access-Control-Allow-Origin", "*");
     if (password === undefined) {
       res.status(401);
       res.send("You need the password of the user.");
@@ -118,7 +115,6 @@ module.exports = function (app, database) {
   });
 
   app.put('/api/user/put', async function (req, res) {
-    res.AppendHeader("Access-Control-Allow-Origin", "*");
     if (req.body.password === undefined) {
       res.status(401);
       res.send("You need the password to update the user.");
@@ -159,7 +155,6 @@ module.exports = function (app, database) {
   });
 
   app.delete('/api/user/delete', (req, res) => {
-    res.AppendHeader("Access-Control-Allow-Origin", "*");
     var id = req.query.id;
     db_user.delete(id);
     db_temp.clean(id);
