@@ -6,10 +6,15 @@ const app = express();
 var database = require('./config/db');
 const port = process.env.PORT || 8080;
 var swaggerUi = require('swagger-ui-express');
+var cors = require('cors')
 swaggerDocument = require('./docs/swagger.json');
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(bodyParser.json())
+app.use(cors);
+res.header("Access-Control-Allow-Origin", "*");
+res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+next();
 app.use(bodyParser.urlencoded({ extended: true }));
 
 MongoClient.connect(database.url, (err, db) => {
