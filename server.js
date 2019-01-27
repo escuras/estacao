@@ -11,7 +11,7 @@ const cors = require('cors');
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(bodyParser.json())
-app.use(cors);
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 MongoClient.connect(database.url, (err, db) => {
