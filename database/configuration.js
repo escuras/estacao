@@ -2,7 +2,7 @@ let MongoClient = require('mongodb').MongoClient;
 const moment = require('moment');
 let mongo = require('mongodb');
 let database = require('../config/db');
-const def_period = 10;
+const def_period = 1800000;
 
 
 exports.insertPeriod = async function (account) {
