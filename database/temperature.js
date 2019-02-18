@@ -52,11 +52,9 @@ exports.findAll = async function (account) {
     .catch(error => console.log(error));
   var dbo = db.db(database.db);
   var sortAsc = { "date": 1 };
-  var collection = dbo.collection(database.collection.temperature).find().sort(sortAsc).toArray()
-    .then(data => { return data; })
-    .catch(error => console.log(error));
-  db.close();
-  return collection;
+  return dbo.collection(database.collection.temperature).find().sort(sortAsc).toArray()
+    .then(data => { db.close(); return data; })
+    .catch(error => { console.log(error); db.close(); });
 }
 
 exports.findByDate = async function (start, end, account) {

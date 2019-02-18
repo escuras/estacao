@@ -12,8 +12,8 @@ exports.insertPeriod = async function (account) {
   var dbo = db.db(database.db);
   var obj = { "account": account, "period": def_period, "def_period": def_period };
   dbo.collection(database.collection.configuration).insertOne(obj)
-    .then(data => console.log("Document inserted."))
-    .catch(error => console.log(error));
+    .then(data => { db.close(); console.log("Document inserted."); })
+    .catch(error => { db.close(); console.log(error); });
   db.close();
 }
 
@@ -26,9 +26,8 @@ exports.updatePeriod = async function (value, account) {
   var myquery = { "account": o_id };
   var newvalues = { $set: { "period": value } };
   dbo.collection(database.collection.configuration).updateOne(myquery, newvalues)
-    .then(data => console.log("Document updated."))
-    .catch(error => console.log(error));
-  db.close();
+    .then(data => { console.log("Document updated."); db.close(); })
+    .catch(error => { console.log(error); db.close(); });
 }
 
 exports.findPeriod = async function (account) {
@@ -39,9 +38,8 @@ exports.findPeriod = async function (account) {
   var o_id = new mongo.ObjectID(account);
   var myquery = { "account": o_id };
   var conf = await dbo.collection(database.collection.configuration).findOne(myquery)
-    .then(data => { return data; })
-    .catch(error => console.log(error));
-  db.close();
+    .then(data => { db.close(); return data; })
+    .catch(error => { console.log(error); db.close(); });
   if (conf != null) {
     return conf.period;
   }
@@ -56,9 +54,8 @@ exports.defaultPeriod = async (account) => {
   var o_id = new mongo.ObjectID(account);
   var myquery = { "account": o_id };
   var conf = await dbo.collection(database.collection.configuration).findOne(myquery)
-    .then(data => { return data; })
-    .catch(error => console.log(error));
-  db.close();
+    .then(data => { db.close(); return data; })
+    .catch(error => { db.close(); console.log(error); });
   if (conf != null) {
     return conf.def_period;
   }
@@ -73,7 +70,6 @@ exports.delete = async (account) => {
   var o_id = new mongo.ObjectID(account);
   var myquery = { "account": o_id };
   dbo.collection(database.collection.configuration).deleteOne(myquery)
-    .then(data => console.log("Configurations deleted."))
-    .catch(error => console.log(error));
-  db.close();
+    .then(data => { console.log("Configurations deleted."); db.close(); })
+    .catch(error => { console.log(error); db.close(); });
 }

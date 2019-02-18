@@ -9,12 +9,9 @@ exports.insert = async function (name, password, email) {
     .catch(error => console.log(error));
   var dbo = db.db(database.db);
   var myobj = { name: name, password: password, email: email };
-  var user = dbo.collection(database.collection.user).insertOne(myobj)
-    .then(data => { return data.ops[0]; })
-    .catch(error => console.log(error));
-  db_conf.in
-  db.close();
-  return user;
+  return dbo.collection(database.collection.user).insertOne(myobj)
+    .then(data => { db.close(); return data.ops[0]; })
+    .catch(error => { console.log(error); db.close(); });
 }
 
 exports.delete = async function (id) {
@@ -25,9 +22,8 @@ exports.delete = async function (id) {
   var o_id = new mongo.ObjectID(id);
   var query = { "_id": o_id };
   await dbo.collection(database.collection.user).deleteOne(query)
-    .then(data => { console.log("1 document deleted"); })
-    .catch(error => console.log(error));
-  db.close();
+    .then(data => { console.log("1 document deleted"); db.close(); })
+    .catch(error => { console.log(error); db.close(); });
 }
 
 exports.findAll = async function () {
@@ -36,11 +32,9 @@ exports.findAll = async function () {
     .catch(error => console.log(error));
   var dbo = db.db(database.db);
   var sortAsc = { "name": 1 };
-  var collection = await dbo.collection(database.collection.user).find().sort(sortAsc).toArray()
-    .then(data => { return data; })
-    .catch(error => console.log(error));
-  db.close();
-  return collection;
+  return await dbo.collection(database.collection.user).find().sort(sortAsc).toArray()
+    .then(data => { db.close(); return data; })
+    .catch(error => { console.log(error); db.close(); });
 }
 
 
@@ -50,11 +44,9 @@ const findOne = async function (query) {
     .catch(error => console.log(error));
   var dbo = db.db(database.db);
   var collection = dbo.collection(database.collection.user);
-  var data = await collection.findOne(query)
-    .then(data => { return data; })
-    .catch(error => console.log(error));
-  db.close();
-  return data;
+  return await collection.findOne(query)
+    .then(data => { db.close(); return data; })
+    .catch(error => { console.log(error); db.close(); });
 }
 
 exports.findByName = async function (name) {
@@ -118,8 +110,8 @@ exports.update = async function (id, name, password, email) {
   }
   console.log(o_id);
   console.log(newvalues);
-  var user = await collection.updateOne(query, newvalues)
-    .then(() => { return true; })
-    .catch(() => { return false; });
+  return await collection.updateOne(query, newvalues)
+    .then(() => { db.close(); return true; })
+    .catch(() => { db.close(); return false; });
 }
 
